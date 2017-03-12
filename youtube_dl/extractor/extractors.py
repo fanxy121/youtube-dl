@@ -246,7 +246,10 @@ from .dfb import DFBIE
 from .dhm import DHMIE
 from .dotsub import DotsubIE
 from .douyutv import DouyuTVIE
-from .dplay import DPlayIE
+from .dplay import (
+    DPlayIE,
+    DPlayItIE,
+)
 from .dramafever import (
     DramaFeverIE,
     DramaFeverSeriesIE,
@@ -262,7 +265,10 @@ from .dvtv import DVTVIE
 from .dumpert import DumpertIE
 from .defense import DefenseGouvFrIE
 from .discovery import DiscoveryIE
-from .discoverygo import DiscoveryGoIE
+from .discoverygo import (
+    DiscoveryGoIE,
+    DiscoveryGoPlaylistIE,
+)
 from .disney import DisneyIE
 from .dispeak import DigitallySpeakingIE
 from .dropbox import DropboxIE

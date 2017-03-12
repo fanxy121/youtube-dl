@@ -449,6 +449,23 @@ class GenericIE(InfoExtractor):
                 },
             }],
         },
+        {
+            # Brightcove with UUID in videoPlayer
+            'url': 'http://www8.hp.com/cn/zh/home.html',
+            'info_dict': {
+                'id': '5255815316001',
+                'ext': 'mp4',
+                'title': 'Sprocket Video - China',
+                'description': 'Sprocket Video - China',
+                'uploader': 'HP-Video Gallery',
+                'timestamp': 1482263210,
+                'upload_date': '20161220',
+                'uploader_id': '1107601872001',
+            },
+            'params': {
+                'skip_download': True,  # m3u8 download
+            },
+        },
         # ooyala video
         {
             'url': 'http://www.rollingstone.com/music/videos/norwegian-dj-cashmere-cat-goes-spartan-on-with-me-premiere-20131219',
@@ -2533,7 +2550,10 @@ class GenericIE(InfoExtractor):
             try:
                 jwplayer_data = self._parse_json(
                     jwplayer_data_str, video_id, transform_source=js_to_json)
-                return self._parse_jwplayer_data(jwplayer_data, video_id)
+                info = self._parse_jwplayer_data(
+                    jwplayer_data, video_id, require_title=False)
+                if not info.get('title'):
+                    info['title'] = video_title
             except ExtractorError:
                 pass
 

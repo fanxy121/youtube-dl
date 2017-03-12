@@ -242,14 +242,11 @@ def _real_main(argv=None):
 
     # PostProcessors
     postprocessors = []
-    # Add the metadata pp first, the other pps will copy it
     if opts.metafromtitle:
         postprocessors.append({
             'key': 'MetadataFromTitle',
             'titleformat': opts.metafromtitle
         })
-    if opts.addmetadata:
-        postprocessors.append({'key': 'FFmpegMetadata'})
     if opts.extractaudio:
         postprocessors.append({
             'key': 'FFmpegExtractAudio',
@@ -262,6 +259,16 @@ def _real_main(argv=None):
             'key': 'FFmpegVideoConvertor',
             'preferedformat': opts.recodevideo,
         })
+    # FFmpegMetadataPP should be run after FFmpegVideoConvertorPP and
+    # FFmpegExtractAudioPP as containers before conversion may not support
+    # metadata (3gp, webm, etc.)
+    # And this post-processor should be placed before other metadata
+    # manipulating post-processors (FFmpegEmbedSubtitle) to prevent loss of
+    # extra metadata. By default ffmpeg preserves metadata applicable for both
+    # source and target containers. From this point the container won't change,
+    # so metadata can be added here.
+    if opts.addmetadata:
+        postprocessors.append({'key': 'FFmpegMetadata'})
     if opts.convertsubtitles:
         postprocessors.append({
             'key': 'FFmpegSubtitlesConvertor',
